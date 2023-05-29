@@ -4,16 +4,36 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+  branches:
+    include:
+      - main
 
-pool:
-  vmImage: ubuntu-latest
+variables:
+  - group: WebAppVariables
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+- job: Build
+  displayName: 'Build and Publish Artifact'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.9' 
+        addToPath: true
+    - script: |
+        python -m venv venv
+        venv\Scripts\activate
+        pip install -r requirements.txt
+        pip install pytest
+        pytest
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: 'Publish Artifact'
+      artifact: drop
