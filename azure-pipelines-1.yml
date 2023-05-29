@@ -14,14 +14,15 @@ jobs:
   steps:
     - task: UsePythonVersion@0
       inputs:
-        versionSpec: '3.9'  
+        versionSpec: '3.9'
         addToPath: true
         pythonLocation: 'GitHub'
         githubEndpoint: 'maneabhishekk'
-        pythonVersion: '3.9' 
+        pythonVersion: '3.9'
     - script: |
         python -m venv venv
-        source venv/bin/activate  # Change the virtual environment activation command for Ubuntu
+        chmod +x venv/bin/activate  
+        source venv/bin/activate
         pip install -r requirements.txt
         pip install pytest
         pytest
