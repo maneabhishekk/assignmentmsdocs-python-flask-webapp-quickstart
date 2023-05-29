@@ -14,15 +14,13 @@ jobs:
   steps:
     - task: UsePythonVersion@0
       inputs:
-        versionSpec: '3.9'
+        versionSpec: '3.8'  
         addToPath: true
-        pythonLocation: 'GitHub'
-        githubEndpoint: 'maneabhishekk'
-        pythonVersion: '3.9'
+        pythonLocation: 'Auto'  
     - script: |
         python -m venv venv
-        chmod +x venv/bin/activate  
         source venv/bin/activate
+        python -m pip install --upgrade pip 
         pip install -r requirements.txt
         pip install pytest
         pytest
