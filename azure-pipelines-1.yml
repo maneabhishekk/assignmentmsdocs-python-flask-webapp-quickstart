@@ -14,6 +14,12 @@ jobs:
   steps:
     - task: UsePythonVersion@0
       inputs:
+        versionSpec: '3.'
+        addToPath: true
+        pythonLocation: 'GitHub'
+        githubEndpoint: 'maneabhishekk' 
+    - task: UsePythonVersion@0
+      inputs:
         versionSpec: '3.'  
         addToPath: true
     - script: |
